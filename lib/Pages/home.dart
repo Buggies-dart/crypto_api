@@ -249,8 +249,15 @@ List<FlSpot> spots = getCryptoPricesAt1hr.map((price) {
 }).toList();
 
  return SingleChildScrollView( scrollDirection: Axis.vertical,
-    child: portfolio(displaySymbol, price['price'], coins[index]['coinName'], displaySymbol == 'BTC'?
-              worth.toString(): '0', coins[index]['image'] as String, coins[index]['color'], spots),
+
+    child: GestureDetector( onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder: (context){
+      return CryptoInfo(coinName: displaySymbol, coinPrice: price['price'], coinImg: coins[index]['image'], color: coins[index]['color'],);
+      }));
+    },
+      child: portfolio(displaySymbol, price['price'], coins[index]['coinName'], displaySymbol == 'BTC'?
+                worth.toString(): '0', coins[index]['image'] as String, coins[index]['color'], spots),
+    ),
   );
            
           }),
@@ -268,67 +275,63 @@ List<FlSpot> spots = getCryptoPricesAt1hr.map((price) {
 ) {
     return Padding(
 padding: const EdgeInsets.all(8.0),
-child: GestureDetector( onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context){
-  return const CryptoInfo();
-})),
-  child: Container(  width: double.infinity, height: 100,
-  decoration: BoxDecoration( borderRadius: BorderRadius.circular(10), color: color),
-    child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-   Padding(
-     padding: const EdgeInsets.only( top: 10, bottom: 10, left: 10 ),
-     child: Container( width: 80, 
-  decoration: BoxDecoration( borderRadius: BorderRadius.circular(15),  color: Colors.white,),
-      child:  Center(child:  Image.asset(img, width: 30, fit: BoxFit.contain,)),
-     ),
-   ),
+child: Container(  width: double.infinity, height: 100,
+decoration: BoxDecoration( borderRadius: BorderRadius.circular(10), color: color),
+  child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+children: [
  Padding(
-  padding:  const EdgeInsets.only(top: 17),
-  child:  Column(
-    children: [
-      Text(text, style: const TextStyle(
-    fontWeight: FontWeight.bold, fontSize: 25, color: Colors.orange
-      ),),
+   padding: const EdgeInsets.only( top: 10, bottom: 10, left: 10 ),
+   child: Container( width: 80, 
+decoration: BoxDecoration( borderRadius: BorderRadius.circular(15),  color: Colors.white,),
+    child:  Center(child:  Image.asset(img, width: 30, fit: BoxFit.contain,)),
+   ),
+ ),
+ Padding(
+padding:  const EdgeInsets.only(top: 17),
+child:  Column(
+  children: [
+    Text(text, style: const TextStyle(
+  fontWeight: FontWeight.bold, fontSize: 25, color: Colors.orange
+    ),),
  Text(coinName, style: const TextStyle(color: Colors.black45, fontSize: 15),)  ],
-  ),
-  ) ,
+),
+) ,
  
 SizedBox( width: 60, height: 70,
 child: LineChart(
-                    LineChartData(
+                  LineChartData(
 gridData: const FlGridData(show: false),
 titlesData: const FlTitlesData(show: false),
 borderData: FlBorderData(show: false),
 lineBarsData: [
 LineChartBarData( color: Colors.orange, spots: spots, isCurved: true,   isStrokeCapRound: true, 
-                          dotData: const FlDotData(show: false),
-                          belowBarData: BarAreaData(
-                            cutOffY: 1.3, applyCutOffY: true,
-                            show: true,
-                            gradient: LinearGradient( begin: Alignment.topCenter, end: Alignment.bottomCenter, stops: const [0,5],
-                              colors: [
+                        dotData: const FlDotData(show: false),
+                        belowBarData: BarAreaData(
+                          cutOffY: 1.3, applyCutOffY: true,
+                          show: true,
+                          gradient: LinearGradient( begin: Alignment.topCenter, end: Alignment.bottomCenter, stops: const [0,5],
+                            colors: [
 Colors.orange.withOpacity(1), Palette.chipColor.withOpacity(0.02)
-                            ])
-                           
-                          ),
+                          ])
+                         
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-  ),
+                ),
+),
 
-   Padding(
-  padding: const EdgeInsets.only(right: 12, top: 25),
-  child: Column(
-    children: [
-      Text('\$$price USD', style: StyleText.largeBodyTextBold,),
-     Text('$asset $text', style: StyleText.largeBodyText,)
-    ],
-    
-  ),
-  )
+ Padding(
+padding: const EdgeInsets.only(right: 12, top: 25),
+child: Column(
+  children: [
+    Text('\$$price USD', style: StyleText.largeBodyTextBold,),
+   Text('$asset $text', style: StyleText.largeBodyText,)
   ],
-    ),
+  
+),
+)
+],
   ),
 ),
 );

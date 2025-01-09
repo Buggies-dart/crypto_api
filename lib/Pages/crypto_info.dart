@@ -1,10 +1,13 @@
 import 'package:crypto_app/Theme/palette.dart';
 import 'package:crypto_app/Widgets/charts.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CryptoInfo extends StatefulWidget {
-  const CryptoInfo({super.key});
+  final String coinName;
+  final String coinPrice;
+  final String coinImg;
+  final Color color;
+  const CryptoInfo({super.key, required this.coinName, required this.coinPrice, required this.coinImg, required this.color});
 
   @override
   State<CryptoInfo> createState() => _CryptoInfoState();
@@ -31,11 +34,11 @@ class _CryptoInfoState extends State<CryptoInfo> {
                       },
                       icon: const Icon(Icons.arrow_back_ios),
                     ),
-                    const Column(
+                    Column(
                       children: [
-                        SizedBox(height: 8),
-                        Text('BTC', style: StyleText.largeBodyTextBold),
-                        Text('-1.32%'),
+                        const SizedBox(height: 8),
+                        Text(widget.coinName, style: StyleText.largeBodyTextBold),
+                        const Text('-1.32%'),
                       ],
                     ),
                     const Icon(Icons.outbond_outlined),
@@ -52,7 +55,7 @@ class _CryptoInfoState extends State<CryptoInfo> {
                       children: [
                         Row(
                           children: [
-                            const Text('1.1525.2', style: StyleText.priceText),
+                             Text(widget.coinPrice, style: StyleText.priceText),
                             const SizedBox(width: 20),
                             Padding(
                               padding: const EdgeInsets.only(top: 7),
@@ -91,14 +94,14 @@ class _CryptoInfoState extends State<CryptoInfo> {
                     child: Container(
                       height: 60,
                       width: 60,
-                      decoration: const BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadiusDirectional.horizontal(
+                      decoration: BoxDecoration(
+                        color: widget.color,
+                        borderRadius: const BorderRadiusDirectional.horizontal(
                           start: Radius.circular(10),
                           end: Radius.circular(10),
                         ),
                       ),
-                      child: Icon(MdiIcons.ethereum),
+                      child: Image.asset(widget.coinImg, fit: BoxFit.contain, width: 25,),
                     ),
                   ),
                 ],
@@ -114,9 +117,9 @@ class _CryptoInfoState extends State<CryptoInfo> {
                   unselectedLabelColor: Colors.black45,
                   tabs: [
                     Text('24H', style: StyleText.largeBodyText),
+                    Text('1H', style: StyleText.largeBodyText),
+                    Text('4H', style: StyleText.largeBodyText),
                     Text('1W', style: StyleText.largeBodyText),
-                    Text('1M', style: StyleText.largeBodyText),
-                    Text('1Y', style: StyleText.largeBodyText),
                     Text('ALL', style: StyleText.largeBodyText),
                   ],
                 ),
