@@ -9,7 +9,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const HomePage(),
+      body:  const HomePage(),
       floatingActionButton: SizedBox( height: 80, width: 75,
         child: FloatingActionButton( backgroundColor: Colors.black,
         shape: const CircleBorder(),
