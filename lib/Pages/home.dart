@@ -2,23 +2,25 @@ import 'dart:async';
 
 import 'package:crypto_app/Pages/crypto_info.dart';
 import 'package:crypto_app/Theme/palette.dart';
+import 'package:crypto_app/main.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
-
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
+Future<Map<String, dynamic>>? fetchDataFuture;
 @override
 void initState() {
     super.initState();
-   fetchData(); 
+  fetchDataFuture = fetchData();   
 }
 
 Future<List<Map<String, dynamic>>> fetchCryptoPrices() async{
@@ -86,6 +88,7 @@ List<Map<String, dynamic>> prices = data.map((kline) {
 }
 
 Future<Map<String, dynamic>> fetchData () async{
+
 final fetchCoinPrices = await fetchCryptoPrices();
 final fetch1hrPrices =  await fetchPricesAt1Hr();
 
@@ -96,11 +99,12 @@ return {
 }
   @override
   Widget build(BuildContext context) {
+  final themeToggle = ref.watch(themeProvider);
     return Scaffold(
 body: SingleChildScrollView( scrollDirection: Axis.vertical,
   child: Column(
     children: [
-      FutureBuilder( future: fetchData(), builder: (context, snapshot){
+      FutureBuilder( future: fetchDataFuture, builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
           child: LinearProgressIndicator(),
@@ -144,8 +148,8 @@ final cryptoPricesAt1hr = snapshot.data!['fetch1hrPrices'] as List<Map<String, d
           padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
           child: Material( elevation: 20, shadowColor: Colors.black45,
             child: Container( decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [
-              Colors.black45, Colors.white70
+              gradient:  LinearGradient(colors: [
+              Theme.of(context).colorScheme.primaryContainer, Theme.of(context).colorScheme.secondaryContainer
               ]),
             borderRadius: BorderRadius.circular(10)        ),
               child: Column( crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +161,7 @@ padding:  EdgeInsets.only( left:15, top: 30), child:  Text('Available Balance', 
                  padding: const EdgeInsets.only(left: 15),
                  child: Row(
                    children:  [
-                  Text(worth.toString(), style: StyleText.priceText),
+                  Text(worth.toString(), style: Theme.of(context).textTheme.titleLarge),
                  const SizedBox( width: 20,),
                  Padding(
                    padding:  const EdgeInsets.only(top: 7),
@@ -197,12 +201,12 @@ padding:  EdgeInsets.only( left:15, top: 30), child:  Text('Available Balance', 
         ),
         const SizedBox( height: 30,),
         
-        const Padding(
-          padding:  EdgeInsets.all(8.0),
+         Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-          Text('PORTFOLIO', style: StyleText.largeBodyText,),
-          Row(
+          Text('PORTFOLIO', style: Theme.of(context).textTheme.bodyMedium,),
+         const Row(
             children: [
               Text('24h'),
               Icon(Icons.swap_vert)
@@ -261,11 +265,20 @@ List<FlSpot> spots = getCryptoPricesAt1hr.map((price) {
   );
            
           }),
-        )
-        ],
+        ),
+       const SizedBox( height: 20,),
+   SwitchListTile.adaptive(value: themeToggle.themeMode == ThemeMode.dark , onChanged: (
+    (value) {
+      setState(() {
+      themeToggle.toggleTheme();
+      });
+      
+    }
+   )) ],
         );
       }),
-   const SizedBox( height: 20,) ],
+   
+    ],
   )
 ),
     );
@@ -325,7 +338,7 @@ Colors.orange.withOpacity(1), Palette.chipColor.withOpacity(0.02)
 padding: const EdgeInsets.only(right: 12, top: 25),
 child: Column(
   children: [
-    Text('\$$price USD', style: StyleText.largeBodyTextBold,),
+    Text('\$$price USD', style: Theme.of(context).textTheme.displayLarge),
    Text('$asset $text', style: StyleText.largeBodyText,)
   ],
   
@@ -348,3 +361,5 @@ Widget chipFunc(Widget img, String text) {
 );
   }
 }
+
+

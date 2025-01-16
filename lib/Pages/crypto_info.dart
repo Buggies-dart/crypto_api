@@ -37,8 +37,10 @@ class _CryptoInfoState extends State<CryptoInfo> {
                     Column(
                       children: [
                         const SizedBox(height: 8),
-                        Text(widget.coinName, style: StyleText.largeBodyTextBold),
-                        const Text('-1.32%'),
+                        Text(widget.coinName, style: Theme.of(context).textTheme.displayLarge),
+                         Text('-1.32%', style: TextStyle(
+color: Theme.of(context).colorScheme.primary
+                        ),),
                       ],
                     ),
                     const Icon(Icons.outbond_outlined),
@@ -55,7 +57,7 @@ class _CryptoInfoState extends State<CryptoInfo> {
                       children: [
                         Row(
                           children: [
-                             Text(widget.coinPrice, style: StyleText.priceText),
+                             Text(widget.coinPrice, style:Theme.of(context).textTheme.titleLarge),
                             const SizedBox(width: 20),
                             Padding(
                               padding: const EdgeInsets.only(top: 7),
@@ -107,25 +109,33 @@ class _CryptoInfoState extends State<CryptoInfo> {
                 ],
               ),
             const  SizedBox( height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: TabBar(
-                  indicatorColor: Colors.black,
+                  indicatorColor: Theme.of(context).colorScheme.primary,
                   dividerHeight: 0,
                   indicatorWeight: 0.5,
                   labelColor: Colors.black,
                   unselectedLabelColor: Colors.black45,
                   tabs: [
-                    Text('24H', style: StyleText.largeBodyText),
-                    Text('1H', style: StyleText.largeBodyText),
-                    Text('4H', style: StyleText.largeBodyText),
-                    Text('1W', style: StyleText.largeBodyText),
-                    Text('ALL', style: StyleText.largeBodyText),
+                    Text('1D', style: Theme.of(context).textTheme.displayLarge),
+                    Text('12H', style: Theme.of(context).textTheme.displayLarge),
+                    Text('4H', style: Theme.of(context).textTheme.displayLarge),
+                    Text('1H', style: Theme.of(context).textTheme.displayLarge),
+                    Text('1W', style: Theme.of(context).textTheme.displayLarge),
                   ],
                 ),
               ),
-        const Flexible(
-          child: CandlestickChart()) ],
+       Flexible(
+          child: TabBarView( children: [ 
+CandlestickChart(coinName: widget.coinName, interval: '1d',),
+CandlestickChart(coinName: widget.coinName, interval: '12h',),
+CandlestickChart(coinName: widget.coinName, interval: '4h',),
+CandlestickChart(coinName: widget.coinName, interval: '1h',),
+CandlestickChart(coinName: widget.coinName, interval:  '1w',),
+          ])
+          ) 
+          ],
          ),
         ),
       ),

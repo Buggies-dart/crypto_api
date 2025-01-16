@@ -31,23 +31,25 @@ class CustomBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath( 
-      clipper: BottomAppBarClipper(), // Apply custom clipper here
-      child:  const Material( elevation: 20, shadowColor: Colors.black,
-        child: BottomAppBar( 
-          color: Colors.white,
-         
-          child: SizedBox(
-            height: 70,
-            child:  Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.home, size: 30),
-                Icon(Icons.credit_card, size: 30),
-                SizedBox(width: 56), // Leave space for the FAB
-                Icon(Icons.analytics, size: 30),
-                Icon(Icons.account_circle, size: 30),
-              ],
+    return Container( color: Colors.white,
+      child: ClipPath( 
+        clipper: BottomAppBarClipper(), // Apply custom clipper here
+        child:  const Material( elevation: 20, shadowColor: Colors.black,
+          child: BottomAppBar( 
+            color: Colors.white,
+           
+            child: SizedBox(
+              height: 70,
+              child:  Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(Icons.home, size: 30, color: Colors.black,),
+                  Icon(Icons.credit_card, size: 30, color: Colors.black),
+                  SizedBox(width: 56), // Leave space for the FAB
+                  Icon(Icons.analytics, size: 30, color: Colors.black),
+                  Icon(Icons.account_circle, size: 30, color: Colors.black),
+                ],
+              ),
             ),
           ),
         ),
@@ -64,7 +66,6 @@ class BottomAppBarClipper extends CustomClipper<Path> {
   const double fabSize = 80.0; // Size of the FloatingActionButton
   const double fabMargin = 8.0; // Space between FAB and BottomAppBar
   const double fabRadius = fabSize / 2.1 + fabMargin;
-
   // Start from the left
   path.moveTo(0, 0);
 
