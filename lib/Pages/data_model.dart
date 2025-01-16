@@ -14,5 +14,4 @@ CandlestickData({required this.day, required this.open, required this.close, req
 
 }
 
-// Dummy Data
 
